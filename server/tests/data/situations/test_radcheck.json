@@ -1,0 +1,61 @@
+{
+  "organization": [
+    {
+      "id": "abce4567-e89b-12d3-a456-426614174000",
+      "name": "seed-organization-sys-radcheck-1",
+      "authId": "auth0|abce4567-e89b-12d3-a456-426614174000",
+      "securityLevel": "RLS"
+    }
+  ],
+
+  "businesses": [
+    {
+      "id": "abbe4567-e89b-12d3-a456-426614174000",
+      "name": "seed-business-sys-radcheck-1",
+      "email": "seed-business-sys-radcheck-1@example.com",
+      "number": "1234567890",
+      "type": "B2B",
+      "billingType": "LeaseLine",
+      "authId": "auth0|abbe4567-e89b-12d3-a456-426614174000",
+      "tenantId": "abce4567-e89b-12d3-a456-426614174000"
+    }
+  ],
+
+  "plans": [
+    {
+      "id": "abce4567-e89b-12d3-a456-426614174000",
+      "name": "seed-plan-sys-radcheck-1",
+      "upSpeed": 100,
+      "downSpeed": 200,
+      "type": "Commercial",
+      "upSpeedUnit": "K",
+      "downSpeedUnit": "M",
+      "dataLimit": 1000000,
+      "tenantId": "abce4567-e89b-12d3-a456-426614174000"
+    }
+  ],
+
+  "planbook": [
+    {
+      "id": "abde4567-e89b-12d3-a456-426614174000",
+      "planId": "abce4567-e89b-12d3-a456-426614174000",
+      "businessId": "abbe4567-e89b-12d3-a456-426614174000",
+      "period": "1 month",
+      "price": 100,
+      "groupname": "seed-planbook-sys-radcheck-1",
+      "tenantId": "abce4567-e89b-12d3-a456-426614174000"
+    }
+  ],
+
+  "customers": [
+    {
+      "id": "abee4567-e89b-12d3-a456-426614174000",
+      "name": "seed-customer-sys-radcheck-1",
+      "username": "seed-customer-sys-radcheck-1",
+      "email": "seed-customer-sys-radcheck-1@example.com",
+      "subscriptionPlan": "abde4567-e89b-12d3-a456-426614174000",
+      "active": true,
+      "tenantId": "abce4567-e89b-12d3-a456-426614174000"
+    }
+  ]
+}

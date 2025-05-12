@@ -1,0 +1,58 @@
+version: '3'
+name: manual-test-provisioning
+
+services:
+  provisioning-backend:
+    container_name: manual-test-provisioning-backend
+    environment:
+      - NODE_ENV=test
+      - AUTH0_REDIRECT_URI=http://manual-test-provisioning-backend:3000/auth/callback
+    env_file: .env.test
+    ports:
+      - "3000:3000"  # Expose port to host machine for manual testing
+    # No healthcheck here
+    # Keep container running even if other services exit
+    restart: unless-stopped
+
+  redis-persistent:
+    container_name: manual-test-sol-redis-persistent
+    volumes:
+      - ./test-redis-data:/data
+    restart: unless-stopped
+
+  redis-inmemory:
+    container_name: manual-test-sol-redis-inmemory
+    restart: unless-stopped
+
+  freeradius:
+    container_name: manual-test-freeradius
+    restart: unless-stopped
+
+  # Make test-runner optional for manual testing
+  test-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    container_name: manual-test-runner
+    env_file: .env.test
+    networks:
+      - nucleus_network
+    volumes:
+      - ./tests:/app/tests
+      - ./test-results:/app/test-results
+    environment:
+      - NODE_ENV=test
+      - AUTH0_REDIRECT_URI=http://test-provisioning-backend:3000/auth/callback
+      - AUTH0_TEST_SERVER_REDIRECT_URI=http://test-runner:3001/auth/callback
+    depends_on:
+      - provisioning-backend
+    # Sleep to give backend time to start
+    command: >
+      sh -c "
+        echo 'Waiting for backend to start...' &&
+        sleep 30 &&
+        echo 'Running tests...' &&
+        bun test
+      "
+    # This ensures the test-runner can exit without stopping other containers
+    restart: "no"

@@ -1,0 +1,61 @@
+{
+  "organization": [
+    {
+      "id": "efce4567-e89b-12d3-a456-426614174000",
+      "name": "seed-organization-sys-radusergroup-1",
+      "authId": "auth0|efce4567-e89b-12d3-a456-426614174000",
+      "securityLevel": "RLS"
+    }
+  ],
+
+  "businesses": [
+    {
+      "id": "efbe4567-e89b-12d3-a456-426614174000",
+      "name": "seed-business-sys-radusergroup-1",
+      "email": "seed-business-sys-radusergroup-1@example.com",
+      "number": "1234567890",
+      "type": "B2B",
+      "billingType": "LeaseLine",
+      "authId": "auth0|efbe4567-e89b-12d3-a456-426614174000",
+      "tenantId": "efce4567-e89b-12d3-a456-426614174000"
+    }
+  ],
+
+  "plans": [
+    {
+      "id": "efce4567-e89b-12d3-a456-426614174000",
+      "name": "seed-plan-sys-radusergroup-1",
+      "upSpeed": 100,
+      "downSpeed": 200,
+      "type": "Commercial",
+      "upSpeedUnit": "K",
+      "downSpeedUnit": "M",
+      "dataLimit": 1000000,
+      "tenantId": "efce4567-e89b-12d3-a456-426614174000"
+    }
+  ],
+
+  "planbook": [
+    {
+      "id": "efde4567-e89b-12d3-a456-426614174000",
+      "planId": "efce4567-e89b-12d3-a456-426614174000",
+      "businessId": "efbe4567-e89b-12d3-a456-426614174000",
+      "period": "1 month",
+      "price": 100,
+      "groupname": "seed-planbook-sys-radusergroup-1",
+      "tenantId": "efce4567-e89b-12d3-a456-426614174000"
+    }
+  ],
+
+  "customers": [
+    {
+      "id": "efee4567-e89b-12d3-a456-426614174000",
+      "name": "seed-customer-sys-radusergroup-1",
+      "username": "seed-customer-sys-radusergroup-1",
+      "email": "seed-customer-sys-radusergroup-1@example.com",
+      "subscriptionPlan": "efde4567-e89b-12d3-a456-426614174000",
+      "active": true,
+      "tenantId": "efce4567-e89b-12d3-a456-426614174000"
+    }
+  ]
+}

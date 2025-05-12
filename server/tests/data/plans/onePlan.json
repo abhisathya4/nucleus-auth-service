@@ -1,0 +1,11 @@
+[
+  {
+    "name": "seed-plan-1",
+    "upSpeed": 100,
+    "downSpeed": 200,
+    "type": "Commercial",
+    "upSpeedUnit": "K",
+    "downSpeedUnit": "M",
+    "dataLimit": 1000000
+  }
+]

@@ -1,0 +1,45 @@
+version: '3'
+name: test-provisioning
+
+services:
+  provisioning-backend:
+    container_name: test-provisioning-backend
+    environment:
+      - NODE_ENV=test
+    env_file: .env.test
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+
+  redis-persistent:
+    container_name: test-sol-redis-persistent
+    volumes:
+      - ./test-redis-data:/data  # Different data directory for tests
+
+  redis-inmemory:
+    container_name: test-sol-redis-inmemory
+
+  freeradius:
+    container_name: test-freeradius
+
+  # Add test runner service
+  test-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    container_name: test-runner
+    env_file: .env.test
+    networks:
+      - nucleus_network
+    volumes:
+      - ./tests:/app/tests  # Mount tests directory
+      - ./test-results:/app/test-results
+    environment:
+      - NODE_ENV=test
+    depends_on:
+      provisioning-backend:
+        condition: service_healthy
+    command: bun test

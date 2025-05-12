@@ -1,0 +1,34 @@
+{
+  "businesses": [
+    {
+      "id": "aaaa4567-e89b-12d3-a456-426614174000",
+      "name": "seed-business-combined-cust-1",
+      "email": "seed-business-combined-cust-1@example.com",
+      "number": "1234567890",
+      "type": "B2B",
+      "billingType": "LeaseLine"
+    }
+  ],
+  "plans": [
+    {
+      "id": "aaaa4567-e89b-12d3-a456-426614174001",
+      "name": "seed-plan-combined-cust-1",
+      "upSpeed": 100,
+      "downSpeed": 200,
+      "type": "Commercial",
+      "upSpeedUnit": "K",
+      "downSpeedUnit": "M",
+      "dataLimit": 1000000
+    }
+  ],
+  "planbook": [
+    {
+      "id": "aaaa4567-e89b-12d3-a456-426614174002",
+      "planId": "aaaa4567-e89b-12d3-a456-426614174001",
+      "businessId": "aaaa4567-e89b-12d3-a456-426614174000",
+      "period": "1 month",
+      "price": "99.99",
+      "groupname": "acme_tech_1G_1G"
+    }
+  ]
+}

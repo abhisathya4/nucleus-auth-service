@@ -1,0 +1,85 @@
+{
+  "organization": [
+    {
+      "id": "254e4567-e89b-12d3-a456-426614174000",
+      "name": "seed-organization-sys-planbook-1",
+      "authId": "auth0|254e4567-e89b-12d3-a456-426614174000",
+      "securityLevel": "RLS"
+    },
+    {
+      "id": "254e4567-e89b-12d3-a456-426614174001",
+      "name": "seed-organization-sys-planbook-2",
+      "authId": "auth0|254e4567-e89b-12d3-a456-426614174001",
+      "securityLevel": "RLS"
+    }
+  ],
+
+  "businesses": [
+    {
+      "id": "254e4567-e89b-12d3-a456-426614174001",
+      "name": "seed-business-sys-planbook-1",
+      "email": "seed-business-sys-planbook-1@example.com",
+      "number": "1234567890",
+      "type": "B2B",
+      "billingType": "LeaseLine",
+      "authId": "auth0|254e4567-e89b-12d3-a456-426614174001",
+      "tenantId": "254e4567-e89b-12d3-a456-426614174000"
+    },
+    {
+      "id": "254e4567-e89b-12d3-a456-426614174002",
+      "name": "seed-business-sys-planbook-2",
+      "email": "seed-business-sys-planbook-2@example.com",
+      "number": "1234567891",
+      "type": "B2B",
+      "billingType": "LeaseLine",
+      "authId": "auth0|254e4567-e89b-12d3-a456-426614174002",
+      "tenantId": "254e4567-e89b-12d3-a456-426614174001"
+    }
+  ],
+
+  "plans": [
+    {
+      "id": "333e4567-e89b-12d3-a456-426614174002",
+      "name": "seed-plan-sys-planbook-1",
+      "upSpeed": 100,
+      "downSpeed": 200,
+      "type": "Commercial",
+      "upSpeedUnit": "K",
+      "downSpeedUnit": "M",
+      "dataLimit": 1000000,
+      "tenantId": "254e4567-e89b-12d3-a456-426614174000"
+    },
+    {
+      "id": "333e4567-e89b-12d3-a456-426614174003",
+      "name": "seed-plan-sys-planbook-2",
+      "upSpeed": 100,
+      "downSpeed": 200,
+      "type": "Commercial",
+      "upSpeedUnit": "K",
+      "downSpeedUnit": "M",
+      "dataLimit": 1000000,
+      "tenantId": "254e4567-e89b-12d3-a456-426614174001"
+    }
+  ],
+
+  "planbook": [
+    {
+        "id": "223e4567-e89b-12d3-a456-426614174003",
+        "planId": "333e4567-e89b-12d3-a456-426614174002",
+        "businessId": "254e4567-e89b-12d3-a456-426614174001",
+        "period": "1 month",
+        "price": 100,
+        "groupname": "seed-planbook-sys-planbook-1",
+        "tenantId": "254e4567-e89b-12d3-a456-426614174000"
+    },
+    {
+        "id": "223e4567-e89b-12d3-a456-426614174004",
+        "planId": "333e4567-e89b-12d3-a456-426614174003",
+        "businessId": "254e4567-e89b-12d3-a456-426614174002",
+        "period": "1 month",
+        "price": 100,
+        "groupname": "seed-planbook-sys-planbook-2",
+        "tenantId": "254e4567-e89b-12d3-a456-426614174001"
+    }
+  ]
+}

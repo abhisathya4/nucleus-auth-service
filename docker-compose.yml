@@ -1,0 +1,83 @@
+version: '3'
+services:
+  provisioning-backend:
+    build:
+      context: .
+    container_name: provisioning-backend
+    ports:
+      - "3000:3000"
+    networks:
+      - nucleus_network
+    volumes:
+      - ./server:/app/server
+      - /app/node_modules
+    env_file: .env.dev
+    environment:
+      # NEON DB URL
+      # DATABASE_URL: ${DATABASE_URL}
+      # # REDIS
+      REDIS_OTP_AUTH_HOST: redis-inmemory
+      # REDIS_OTP_AUTH_PORT: ${REDIS_OTP_AUTH_PORT}
+      # REDIS_OTP_AUTH_SECRET: ${REDIS_OTP_AUTH_SECRET}
+      REDIS_INVALIDATED_HOST: redis-persistent
+      # REDIS_INVALIDATED_PORT: ${REDIS_INVALIDATED_PORT}
+      # REDIS_INVALIDATED_SECRET: ${REDIS_INVALIDATED_SECRET}
+      # # ENCRYPTION
+      # AES_ENCRYPTION_KEY: ${AES_ENCRYPTION_KEY}
+      # # AUTH0
+      # AUTH0_CLIENT_SECRET: ${AUTH0_CLIENT_SECRET}
+      # AUTH0_CLIENT_ID: ${AUTH0_CLIENT_ID}
+      # AUTH0_DOMAIN: ${AUTH0_DOMAIN}
+      # AUTH0_AUDIENCE: ${AUTH0_AUDIENCE}
+      # AUTH0_REDIRECT_URI: ${AUTH0_REDIRECT_URI}
+      # AUTH0_RETURN_TO_URL: ${AUTH0_RETURN_TO_URL}
+      # # AUTH0 MANAGEMENT
+      # AUTH0_MANAGEMENT_CLIENT_SECRET: ${AUTH0_MANAGEMENT_CLIENT_SECRET}
+      # AUTH0_MANAGEMENT_CLIENT_ID: ${AUTH0_MANAGEMENT_CLIENT_ID}
+      # AUTH0_MANAGEMENT_DOMAIN: ${AUTH0_MANAGEMENT_DOMAIN}
+      # AUTH0_MANAGEMENT_AUDIENCE: ${AUTH0_MANAGEMENT_AUDIENCE}
+
+  freeradius:
+    image: freeradius/freeradius-server:latest
+    platform: linux/amd64
+    container_name: freeradius
+    ports:
+      - "1812:1812/udp"
+      - "1813:1813/udp"
+    networks:
+      - default
+    volumes:
+      - ./radius-config/sites-enabled/default:/etc/raddb/sites-enabled/default
+      - ./radius-config/sites-available/default:/etc/raddb/sites-available/default
+      - ./radius-config/mods-enabled/sql:/etc/raddb/mods-enabled/sql
+      - ./radius-config/mods-enabled/pap:/etc/raddb/mods-enabled/pap
+      - ./radius-config/mods-config/sql/main/postgresql/queries.conf:/etc/raddb/mods-config/sql/main/postgresql/queries.conf
+    command: /usr/sbin/freeradius -X
+    restart: unless-stopped
+
+  redis-persistent:
+    image: redis:latest
+    container_name: sol-redis-persistent
+    ports:
+      - "6380:6380"
+    networks:
+      - nucleus_network
+    volumes:
+      - ./redis-data:/data
+      - ./configs/redis/invalidated.conf:/usr/local/etc/redis/redis.conf
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+
+  redis-inmemory:
+    image: redis:latest
+    container_name: sol-redis-inmemory
+    ports:
+      - "6379:6379"
+    networks:
+      - nucleus_network
+    volumes:
+      - ./configs/redis/otp-auth.conf:/usr/local/etc/redis/redis.conf
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+
+networks:
+  nucleus_network:
+    driver: bridge
