@@ -1,14 +1,11 @@
-import { drizzle } from "drizzle-orm/postgres-js";
-import { drizzle as drizzleNeon } from "drizzle-orm/neon-http";
-import { neon } from "@neondatabase/serverless";
-import postgres from "postgres";
-import env from "../lib/config/env";
+import { getDb, initSecureDatabase } from "./rls/secure-drizzle";
+await initSecureDatabase();
+export const db = getDb();
 
-// for query purposes
-const connectionString = env.DATABASE_URL;
-export const queryClient = postgres(connectionString);
-export const db = drizzle(queryClient);
-
-const authConnectionString = env.DATABASE_AUTHENTICATED_URL;
-export const authClient = neon(authConnectionString);
-export const authDb = drizzleNeon({ client: authClient });
+// Secure RLS-aware database (drizzle + session-based access)
+// Must call `initSecureDatabase()` at app startup
+export {
+  initSecureDatabase,
+  getDb,
+  createSecureClient,
+} from "./rls/secure-drizzle";

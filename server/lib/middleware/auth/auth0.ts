@@ -5,7 +5,7 @@ import {
   getTenantUserFromAuthId,
   getTenantUserFromEmail,
   updateTenantUserAuthId,
-} from "../../../db/queries/tables/organization/tenantUser";
+} from "../../../db/queries/tables/tenantUser";
 import type { AuthUser } from "../models/AuthUser";
 
 export const getAuthUser = middlewareFactory.createMiddleware(

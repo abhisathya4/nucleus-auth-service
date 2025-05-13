@@ -36,7 +36,7 @@ export class TestDatabaseClient {
    */
   private constructor(db: ReturnType<typeof drizzle>) {
     this.db = db;
-    if (this.tables.length != 14) {
+    if (this.tables.length != 2) {
       throw new Error("Tables array is not initialized correctly");
     }
 
@@ -211,6 +211,12 @@ export class TestDatabaseClient {
     }
   }
 
+  /**
+   * Seeds the database with data for test cases. It executes the query as neondb_owner.
+   * @param dataFile - The file containing the data to seed.
+   * @param tenant - Whether the data is tenant-specific. When true, the Harness' tenantId is added to the data.
+   * @returns The result of the seed operation.
+   */
   public async seedSituation(dataFile: string, tenant: boolean = true) {
     try {
       // Construct the absolute path to the data file

@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { insertTenantSchema, tenant } from "../../../schema/tenant";
+import { insertTenantSchema, tenant } from "../../schema/tenant";
 import { extendZodWithOpenApi } from "zod-openapi";
-import { db } from "../../..";
+import { db } from "../..";
 import { eq } from "drizzle-orm";
 extendZodWithOpenApi(z);
 

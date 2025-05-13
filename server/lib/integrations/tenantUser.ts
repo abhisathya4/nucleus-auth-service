@@ -1,8 +1,8 @@
 import type { z } from "zod";
 import type { postTenantUserSchema } from "../../shared/integrations/tenantUser";
 import { auth0 } from "../apis/auth0";
-import { getTenantFromId } from "../../db/queries/tables/organization/tenant";
-import { createTenantUser } from "../../db/queries/tables/organization/tenantUser";
+import { getTenantFromId } from "../../db/queries/tables/tenant";
+import { createTenantUser } from "../../db/queries/tables/tenantUser";
 import { insertTenantUserSchema } from "../../db/schema/tenantUser";
 
 export const postTenantUser = async (

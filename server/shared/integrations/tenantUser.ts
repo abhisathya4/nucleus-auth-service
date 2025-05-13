@@ -1,4 +1,4 @@
-import { createTenantUserSchema } from "../../db/queries/tables/organization/tenantUser";
+import { createTenantUserSchema } from "../../db/queries/tables/tenantUser";
 import { z } from "zod";
 import { extendZodWithOpenApi } from "zod-openapi";
 

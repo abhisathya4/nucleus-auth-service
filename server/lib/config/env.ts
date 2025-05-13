@@ -26,6 +26,10 @@ const env = {
   // AES Encryption
   AES_ENCRYPTION_KEY: process.env.AES_ENCRYPTION_KEY!,
 
+  // Ed25519 Keys
+  ED25519_SIGNING_KEY: process.env.ED25519_SIGNING_KEY!,
+  ED25519_PUBLIC_KEY: process.env.ED25519_PUBLIC_KEY!,
+
   // Application State
   APPLICATION_STATE:
     process.env.APPLICATION_STATE === "prod"

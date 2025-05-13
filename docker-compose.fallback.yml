@@ -1,31 +1,28 @@
 version: '3'
-name: test-provisioning
+name: test-auth-service
 
 services:
-  provisioning-backend:
-    container_name: test-provisioning-backend
+  auth-service:
+    container_name: test-auth-service
     environment:
       - NODE_ENV=test
-      - AUTH0_REDIRECT_URI=http://test-provisioning-backend:3000/auth/callback
+      - AUTH0_REDIRECT_URI=http://test-auth-service:3000/auth/callback
     env_file: .env.test
     # No healthcheck here
 
   redis-persistent:
-    container_name: test-sol-redis-persistent
+    container_name: test-sol-redis-persistent-1
     volumes:
       - ./test-redis-data:/data
 
   redis-inmemory:
-    container_name: test-sol-redis-inmemory
-
-  freeradius:
-    container_name: test-freeradius
+    container_name: test-sol-redis-inmemory-1
 
   test-runner:
     build:
       context: .
       dockerfile: Dockerfile.test
-    container_name: test-runner
+    container_name: test-runner-auth-service
     env_file: .env.test
     networks:
       - nucleus_network
@@ -34,10 +31,10 @@ services:
       - ./test-results:/app/test-results
     environment:
       - NODE_ENV=test
-      - AUTH0_REDIRECT_URI=http://test-provisioning-backend:3000/auth/callback
-      - AUTH0_TEST_SERVER_REDIRECT_URI=http://test-runner:3001/auth/callback
+      - AUTH0_REDIRECT_URI=http://test-auth-service:3000/auth/callback
+      - AUTH0_TEST_SERVER_REDIRECT_URI=http://test-runner-auth-service:3001/auth/callback
     depends_on:
-      - provisioning-backend
+      - auth-service
     # Sleep to give backend time to start
     command: >
       sh -c "

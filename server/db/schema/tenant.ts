@@ -33,7 +33,7 @@ export const tenant = pgTable(
     uniqueIndex("tenant_auth_id_idx").on(tenant.authId),
     pgPolicy("tenant_rls_policy", {
       as: "permissive",
-      to: "neondb_owner",
+      to: "nucleus_owner",
       for: "all",
       using: sql`true`,
       withCheck: sql`true`,

@@ -1,17 +1,17 @@
 import { describe, test, expect, afterAll, beforeAll } from "bun:test";
-import { harness } from "../../../../bun.test";
+import { harness } from "../../../bun.test";
 import { v4 as uuidv4 } from "uuid";
 import {
   tenantUser,
   selectTenantUserSchema,
-} from "../../../../../db/schema/tenantUser";
+} from "../../../../db/schema/tenantUser";
 import {
   createTenantUser,
   getTenantUserFromAuthId,
   getTenantUserFromEmail,
   updateTenantUserAuthId,
   getTenantUsersForTenant,
-} from "../../../../../db/queries/tables/organization/tenantUser";
+} from "../../../../db/queries/tables/tenantUser";
 import type { z } from "zod";
 import { inArray } from "drizzle-orm";
 

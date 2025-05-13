@@ -2,16 +2,10 @@ import { Hono } from "hono";
 import { openAPISpecs } from "hono-openapi";
 import { logger } from "hono/logger";
 import { apiReference } from "@scalar/hono-api-reference";
-import { customerRoutes } from "./routes/customer";
-import { radiusDeviceRoutes } from "./routes/radius/devices";
-import { planbookRoutes } from "./routes/planbook";
-import { businessesRoutes } from "./routes/business";
-import { planRoutes } from "./routes/plans";
 import { authRoute } from "./routes/auth/auth";
 import { tenantRoutes } from "./routes/organization/tenant";
 import { registrationRoutes } from "./routes/organization/user";
 import { tenantUserRoutes } from "./routes/organization/tenantUser";
-import { fruitsRoutes } from "./routes/test_rls/fruits";
 export const app = new Hono();
 
 app.use("*", logger());
@@ -26,15 +20,9 @@ app.onError((err, c) => {
 const apiRoutes = app
   .route("/auth", authRoute)
   .basePath("/api/v1")
-  .route("/businesses", businessesRoutes)
-  .route("/customers", customerRoutes)
-  .route("/organizations", tenantRoutes)
-  .route("/organizations/users", registrationRoutes)
-  .route("/organizations/admins", tenantUserRoutes)
-  .route("/plans", planRoutes)
-  .route("/planbook", planbookRoutes)
-  .route("/radius/devices", radiusDeviceRoutes)
-  .route("/test_rls/fruits", fruitsRoutes);
+  .route("/tenant", tenantRoutes)
+  .route("/tenant", registrationRoutes)
+  .route("/tenant/users", tenantUserRoutes)
 
 app.get("/health", (c) => c.text("OK", 200));
 

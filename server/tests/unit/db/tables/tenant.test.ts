@@ -1,11 +1,11 @@
 import { describe, test, expect, afterAll } from "bun:test";
-import { harness } from "../../../../bun.test";
+import { harness } from "../../../bun.test";
 import { v4 as uuidv4 } from "uuid";
-import { tenant, selectTenantSchema } from "../../../../../db/schema/tenant";
+import { tenant, selectTenantSchema } from "../../../../db/schema/tenant";
 import {
   createTenant,
   getTenantFromId,
-} from "../../../../../db/queries/tables/organization/tenant";
+} from "../../../../db/queries/tables/tenant";
 import type { z } from "zod";
 import { inArray } from "drizzle-orm";
 

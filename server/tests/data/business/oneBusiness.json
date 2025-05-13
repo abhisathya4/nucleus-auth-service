@@ -1,9 +1,0 @@
-[
-  {
-    "name": "seed-business-1",
-    "email": "seed-business-1@example.com",
-    "number": "1234567890",
-    "type": "B2B",
-    "billingType": "LeaseLine"
-  }
-]

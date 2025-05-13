@@ -1,5 +1,5 @@
 import { middlewareFactory } from "..";
-import { getTenantUserFromAuthId } from "../../../db/queries/tables/organization/tenantUser";
+import { getTenantUserFromAuthId } from "../../../db/queries/tables/tenantUser";
 import { kindeClient, sessionManager } from "../../auth/kinde";
 import type { AuthUser } from "../models/AuthUser";
 

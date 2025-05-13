@@ -1,7 +1,7 @@
 import type { z } from "zod";
 import type { postTenantSchema } from "../../shared/integrations/tenant";
 import { auth0 } from "../apis/auth0";
-import { createTenant } from "../../db/queries/tables/organization/tenant";
+import { createTenant } from "../../db/queries/tables/tenant";
 import type { Auth0Management } from "../apis/auth0/Auth0Management";
 
 export const postTenant = async (

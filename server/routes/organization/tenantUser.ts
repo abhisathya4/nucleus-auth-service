@@ -3,7 +3,7 @@ import { describeRoute } from "hono-openapi";
 import { resolver } from "hono-openapi/zod";
 import { z } from "zod";
 import { extendZodWithOpenApi } from "zod-openapi";
-import { getTenantUsersForTenant } from "../../db/queries/tables/organization/tenantUser";
+import { getTenantUsersForTenant } from "../../db/queries/tables/tenantUser";
 import { getUserRLSToken } from "../../lib/middleware/rls/userRLS";
 import { errorSchema } from "../../lib/utils/routingUtils";
 import { getAuthUser } from "../../lib/middleware/auth/auth0";

@@ -1,8 +1,8 @@
 import { eq } from "drizzle-orm";
-import { authDb, db } from "../../..";
-import { tenantUser, selectTenantUserSchema } from "../../../schema/tenantUser";
+import { db } from "../..";
+import { tenantUser, selectTenantUserSchema } from "../../schema/tenantUser";
 import type { z } from "zod";
-import { insertTenantUserSchema } from "../../../schema/tenantUser";
+import { insertTenantUserSchema } from "../../schema/tenantUser";
 
 export const getTenantUserFromAuthId = async (authId: string) => {
   const tenantUserData = await db

@@ -1,12 +1,12 @@
 version: '3'
-name: manual-test-provisioning
+name: manual-test-auth-service
 
 services:
-  provisioning-backend:
-    container_name: manual-test-provisioning-backend
+  auth-service:
+    container_name: manual-test-auth-service
     environment:
       - NODE_ENV=test
-      - AUTH0_REDIRECT_URI=http://manual-test-provisioning-backend:3000/auth/callback
+      - AUTH0_REDIRECT_URI=http://manual-test-auth-service:3000/auth/callback
     env_file: .env.test
     ports:
       - "3000:3000"  # Expose port to host machine for manual testing
@@ -24,10 +24,6 @@ services:
     container_name: manual-test-sol-redis-inmemory
     restart: unless-stopped
 
-  freeradius:
-    container_name: manual-test-freeradius
-    restart: unless-stopped
-
   # Make test-runner optional for manual testing
   test-runner:
     build:
@@ -42,10 +38,10 @@ services:
       - ./test-results:/app/test-results
     environment:
       - NODE_ENV=test
-      - AUTH0_REDIRECT_URI=http://test-provisioning-backend:3000/auth/callback
-      - AUTH0_TEST_SERVER_REDIRECT_URI=http://test-runner:3001/auth/callback
+      - AUTH0_REDIRECT_URI=http://manual-test-auth-service:3000/auth/callback
+      - AUTH0_TEST_SERVER_REDIRECT_URI=http://manual-test-runner:3001/auth/callback
     depends_on:
-      - provisioning-backend
+      - auth-service
     # Sleep to give backend time to start
     command: >
       sh -c "

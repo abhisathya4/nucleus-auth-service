@@ -1,9 +1,9 @@
 version: '3'
 services:
-  provisioning-backend:
+  auth-service:
     build:
       context: .
-    container_name: provisioning-backend
+    container_name: auth-service
     ports:
       - "3000:3000"
     networks:
@@ -36,24 +36,6 @@ services:
       # AUTH0_MANAGEMENT_CLIENT_ID: ${AUTH0_MANAGEMENT_CLIENT_ID}
       # AUTH0_MANAGEMENT_DOMAIN: ${AUTH0_MANAGEMENT_DOMAIN}
       # AUTH0_MANAGEMENT_AUDIENCE: ${AUTH0_MANAGEMENT_AUDIENCE}
-
-  freeradius:
-    image: freeradius/freeradius-server:latest
-    platform: linux/amd64
-    container_name: freeradius
-    ports:
-      - "1812:1812/udp"
-      - "1813:1813/udp"
-    networks:
-      - default
-    volumes:
-      - ./radius-config/sites-enabled/default:/etc/raddb/sites-enabled/default
-      - ./radius-config/sites-available/default:/etc/raddb/sites-available/default
-      - ./radius-config/mods-enabled/sql:/etc/raddb/mods-enabled/sql
-      - ./radius-config/mods-enabled/pap:/etc/raddb/mods-enabled/pap
-      - ./radius-config/mods-config/sql/main/postgresql/queries.conf:/etc/raddb/mods-config/sql/main/postgresql/queries.conf
-    command: /usr/sbin/freeradius -X
-    restart: unless-stopped
 
   redis-persistent:
     image: redis:latest

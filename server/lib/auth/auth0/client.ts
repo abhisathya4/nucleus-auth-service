@@ -5,7 +5,7 @@ import env from "../../config/env.ts";
 import type { Auth0Client, Auth0User } from "./auth0Client";
 import { sessionManager } from "./sessionManager.ts";
 import { SaveRLSToken } from "../../../redis/queries/rlsTokens.ts";
-import { getTenantUserFromAuthId } from "../../../db/queries/tables/organization/tenantUser.ts";
+import { getTenantUserFromAuthId } from "../../../db/queries/tables/tenantUser.ts";
 
 export interface TokenResponse {
   access_token: string;
