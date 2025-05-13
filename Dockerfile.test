@@ -5,6 +5,9 @@ RUN apt-get update && apt-get install -y \
     curl \
     chromium \
     ca-certificates \
+    dnsutils \
+    iputils-ping \
+    net-tools \
     && rm -rf /var/lib/apt/lists/*
 
 # Set Puppeteer to use installed Chromium

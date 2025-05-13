@@ -20,8 +20,11 @@ export interface Auth0User {
 export interface Auth0Client {
   login(redirectPath?: string): string;
   logout(returnTo?: string): string;
-  handleCallback(c: Context, redirectPath?: string): Promise<{ user: Auth0User }>;
-  getUser(accessToken: string, c: any): Promise<Auth0User>;
+  handleCallback(
+    c: Context,
+    redirectPath?: string
+  ): Promise<{ user: Auth0User }>;
+  getUser(accessToken: string): Promise<Auth0User>;
   silentLogin(c: any): Promise<Auth0User | null>;
   refreshToken(c: any): Promise<Auth0User | null>;
   announce(): void;

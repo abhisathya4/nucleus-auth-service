@@ -7,6 +7,7 @@ import type { z } from "zod";
 import { tenant, type selectTenantSchema } from "../../db/schema/tenant";
 import { tenantUser, selectTenantUserSchema } from "../../db/schema/tenantUser";
 import { PgColumn, type PgTable } from "drizzle-orm/pg-core";
+import { fruits } from "../../db/schema/test_rls/fruits";
 
 /**
  * TestDatabaseClient sets up a Drizzle/Neon connection and provides
@@ -20,12 +21,14 @@ export class TestDatabaseClient {
     // Tenant
     tenantUser,
     tenant,
+    fruits
   ];
 
   private pk_columns: Record<string, PgColumn[]> = {
     // Tenant
     tenantUser: [tenantUser.id],
     tenant: [tenant.id],
+    fruits: [fruits.id]
   };
 
   private tableName_map: Record<string, PgTable> = {};
@@ -36,7 +39,7 @@ export class TestDatabaseClient {
    */
   private constructor(db: ReturnType<typeof drizzle>) {
     this.db = db;
-    if (this.tables.length != 2) {
+    if (this.tables.length != 3) {
       throw new Error("Tables array is not initialized correctly");
     }
 

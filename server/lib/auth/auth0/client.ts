@@ -6,6 +6,7 @@ import type { Auth0Client, Auth0User } from "./auth0Client";
 import { sessionManager } from "./sessionManager.ts";
 import { SaveRLSToken } from "../../../redis/queries/rlsTokens.ts";
 import { getTenantUserFromAuthId } from "../../../db/queries/tables/tenantUser.ts";
+import type { selectTenantUserSchema } from "../../../db/schema/tenantUser.ts";
 
 export interface TokenResponse {
   access_token: string;
@@ -68,7 +69,8 @@ export const client: Auth0Client = {
     if (tokenData.error)
       throw new Error("Token exchange failed: " + tokenData.error);
     console.log("Token exchange successful:", tokenData);
-    const user = await client.getUser(tokenData.access_token, c);
+    const user = await client.getUser(tokenData.access_token);
+    console.log("User fetched:", user);
 
     await sessionManager.set(c, {
       user,
@@ -77,7 +79,25 @@ export const client: Auth0Client = {
       refreshToken: tokenData.refresh_token,
     });
 
-    const db_admin = await getTenantUserFromAuthId(user.sub);
+    console.log("Session set successfully");
+    let db_admin: {
+      id: string;
+      tenantId: string;
+      email: string;
+      name: string;
+      authId: string | null;
+      createdAt: Date;
+    };
+
+    try {
+      db_admin = await getTenantUserFromAuthId(user.sub);
+    } catch (error) {
+      console.error("Failed to fetch DB admin:", error);
+      throw new Error("Failed to fetch DB admin");
+    }
+
+    console.log("DB admin fetched:", db_admin);
+
     await SaveRLSToken(db_admin.id, tokenData.id_token);
 
     return { user };
@@ -118,7 +138,7 @@ export const client: Auth0Client = {
     const newToken = (await res.json()) as TokenResponse;
     if (!newToken.access_token) throw new Error("Refresh failed");
 
-    const user = await client.getUser(newToken.access_token, c);
+    const user = await client.getUser(newToken.access_token);
 
     const db_admin = await getTenantUserFromAuthId(user.sub);
     await SaveRLSToken(db_admin.id, newToken.id_token);

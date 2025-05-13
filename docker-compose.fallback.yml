@@ -3,26 +3,35 @@ name: test-auth-service
 
 services:
   auth-service:
+    build:
+      context: .
     container_name: test-auth-service
     environment:
       - NODE_ENV=test
       - AUTH0_REDIRECT_URI=http://test-auth-service:3000/auth/callback
     env_file: .env.test
-    # No healthcheck here
+    # No explicit network needed - will use default network like in provisioning
 
   redis-persistent:
-    container_name: test-sol-redis-persistent-1
+    image: redis:latest
+    container_name: test-sol-redis-persistent
     volumes:
       - ./test-redis-data:/data
+      - ./configs/redis/invalidated.conf:/usr/local/etc/redis/redis.conf
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
 
   redis-inmemory:
-    container_name: test-sol-redis-inmemory-1
+    image: redis:latest
+    container_name: test-sol-redis-inmemory
+    volumes:
+      - ./configs/redis/otp-auth.conf:/usr/local/etc/redis/redis.conf
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
 
   test-runner:
     build:
       context: .
       dockerfile: Dockerfile.test
-    container_name: test-runner-auth-service
+    container_name: test-runner
     env_file: .env.test
     networks:
       - nucleus_network
@@ -32,10 +41,10 @@ services:
     environment:
       - NODE_ENV=test
       - AUTH0_REDIRECT_URI=http://test-auth-service:3000/auth/callback
-      - AUTH0_TEST_SERVER_REDIRECT_URI=http://test-runner-auth-service:3001/auth/callback
+      - AUTH0_TEST_SERVER_REDIRECT_URI=http://test-runner:3001/auth/callback
     depends_on:
       - auth-service
-    # Sleep to give backend time to start
+    # Sleep for 5 seconds to give backend time to start (matching provisioning)
     command: >
       sh -c "
         echo 'Waiting for backend to start...' &&
@@ -43,3 +52,8 @@ services:
         echo 'Running tests...' &&
         bun test
       "
+
+# Only define network for test-runner since it's explicitly used there
+networks:
+  nucleus_network:
+    driver: bridge
