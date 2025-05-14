@@ -17,7 +17,10 @@ describe("Fruits RLS Tests", () => {
 
   beforeAll(async () => {
     // Seed fruits
-    seededFruits1 = await harness.db.seedSituation("test_seed_fruits_1.json");
+    seededFruits1 = await harness.db.seedSituation(
+      "test_seed_fruits_1.json",
+      false
+    );
     seededFruits2 = await harness.db.seedSituation(
       "test_seed_fruits_2.json",
       true
@@ -32,7 +35,7 @@ describe("Fruits RLS Tests", () => {
 
   describe("Test getFruitsForOrganization", () => {
     test("should return fruits for existing organization", async () => {
-      const result = await getFruitsForOrganization(harness.user.id_token);
+      const result = await getFruitsForOrganization(harness.user.user_id);
 
       expect(result).toBeArrayOfSize(4);
     });

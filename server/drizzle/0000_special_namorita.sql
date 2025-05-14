@@ -1,15 +1,36 @@
-CREATE OR REPLACE FUNCTION public.get_auth_user_id() 
-RETURNS text AS $$
+-- Create an authentication schema
+CREATE SCHEMA IF NOT EXISTS auth;
+
+-- Set the current user ID (stored in session config)
+CREATE OR REPLACE FUNCTION auth.set_user_id(user_id TEXT)
+RETURNS void AS $$
 BEGIN
-  RETURN auth.user_id();
+  -- Store user_id as a session-local setting (overwrites for this connection)
+  PERFORM set_config('auth.user_id', user_id, false);
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Get the current user ID
+CREATE OR REPLACE FUNCTION auth.get_user_id()
+RETURNS TEXT AS $$
+BEGIN
+  RETURN current_setting('auth.user_id', true);
 EXCEPTION
   WHEN OTHERS THEN
     RETURN NULL;
 END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+-- Optional: reset the user ID (clears auth session state)
+CREATE OR REPLACE FUNCTION auth.init()
+RETURNS void AS $$
+BEGIN
+  -- This removes the setting for this session
+  PERFORM set_config('auth.user_id', '', false);
+END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
--- Grant execute permission to everyone
-GRANT EXECUTE ON FUNCTION public.get_auth_user_id() TO public;
+------ Table Schema ------
 
 CREATE TYPE "public"."security_level" AS ENUM('RLS', 'DB', 'Dedicated');--> statement-breakpoint
 CREATE TABLE "tenant" (
@@ -55,7 +76,7 @@ CREATE INDEX "fruits_tenant_id_idx" ON "fruits" USING btree ("tenant_id");--> st
 CREATE POLICY "tenant_rls_policy" ON "tenant" AS PERMISSIVE FOR ALL TO "nucleus_owner" USING (true) WITH CHECK (true);--> statement-breakpoint
 CREATE POLICY "fruits_rls_owner_policy" ON "fruits" AS PERMISSIVE FOR ALL TO "nucleus_owner" USING (true) WITH CHECK (true);--> statement-breakpoint
 CREATE POLICY "fruits_org_isolation_policy" ON "fruits" AS PERMISSIVE FOR ALL TO public USING (tenant_id IN (
-        SELECT tenant_id FROM "tenant_user" WHERE auth_id = public.get_auth_user_id()
+        SELECT tenant_id FROM "tenant_user" WHERE auth_id = auth.get_user_id()
       )) WITH CHECK (tenant_id IN (
-        SELECT tenant_id FROM "tenant_user" WHERE auth_id = public.get_auth_user_id()
+        SELECT tenant_id FROM "tenant_user" WHERE auth_id = auth.get_user_id()
       ));

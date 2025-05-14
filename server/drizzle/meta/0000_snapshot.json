@@ -1,5 +1,5 @@
 {
-  "id": "cfab930b-6095-4460-962f-f4021c66d61e",
+  "id": "aef86485-55e2-4b29-8c86-4f0f103a2231",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -362,8 +362,8 @@
           "to": [
             "public"
           ],
-          "using": "tenant_id IN (\n        SELECT tenant_id FROM \"tenant_user\" WHERE auth_id = public.get_auth_user_id()\n      )",
-          "withCheck": "tenant_id IN (\n        SELECT tenant_id FROM \"tenant_user\" WHERE auth_id = public.get_auth_user_id()\n      )"
+          "using": "tenant_id IN (\n        SELECT tenant_id FROM \"tenant_user\" WHERE auth_id = auth.get_user_id()\n      )",
+          "withCheck": "tenant_id IN (\n        SELECT tenant_id FROM \"tenant_user\" WHERE auth_id = auth.get_user_id()\n      )"
         }
       },
       "checkConstraints": {},

@@ -40,10 +40,10 @@ export const fruits = pgTable(
       to: "public",
       for: "all",
       using: sql`tenant_id IN (
-        SELECT tenant_id FROM "tenant_user" WHERE auth_id = public.get_auth_user_id()
+        SELECT tenant_id FROM "tenant_user" WHERE auth_id = auth.get_user_id()
       )`,
       withCheck: sql`tenant_id IN (
-        SELECT tenant_id FROM "tenant_user" WHERE auth_id = public.get_auth_user_id()
+        SELECT tenant_id FROM "tenant_user" WHERE auth_id = auth.get_user_id()
       )`,
     }),
   ]

@@ -15,6 +15,7 @@ const {
 export class TestUserAuth {
   private idToken: string | null = null;
   private accessToken: string | null = null;
+  private userId: string | null = null;
   private auth_session_cookie: string | null = null;
 
   // Puppeteer launch options for Docker compatibility
@@ -94,6 +95,7 @@ export class TestUserAuth {
 
       console.log("Logged out successfully via browser");
       this.idToken = null;
+      this.userId = null;
       this.accessToken = null;
       return true;
     } catch (error) {
@@ -137,6 +139,16 @@ export class TestUserAuth {
   }
 
   /**
+   * Get the user ID
+   */
+  public get user_id() {
+    if (!this.userId) {
+      throw new Error("User ID not initialized");
+    }
+    return this.userId;
+  }
+
+  /**
    * Get the access token
    */
   public get access_token() {
@@ -148,6 +160,7 @@ export class TestUserAuth {
    */
   public reset() {
     this.idToken = null;
+    this.userId = null;
     this.accessToken = null;
   }
 
@@ -409,7 +422,7 @@ export class TestUserAuth {
 
   private collectAuthData() {
     // Look for token cookies if we don't have explicit tokens
-    if (!this.idToken || !this.accessToken) {
+    if (!this.idToken || !this.accessToken || !this.userId) {
       this.checkForTokenCookies();
     }
 
@@ -418,6 +431,7 @@ export class TestUserAuth {
       id_token: this.idToken,
       access_token: this.accessToken,
       auth_session_cookie: this.auth_session_cookie,
+      user_id: this.userId,
     };
   }
 
@@ -500,8 +514,10 @@ export class TestUserAuth {
 
     if (this.auth_session_cookie) {
       const decoded = jwt.decode(this.auth_session_cookie) as any;
+      console.log("Decoded auth session cookie:", decoded);
       this.idToken = decoded.id_token;
       this.accessToken = decoded.accessToken;
+      this.userId = decoded.user.sub;
     }
   }
 
