@@ -84,7 +84,7 @@ async function initRlsFunctions() {
 }
 
 /**
- * Returns the initialized drizzle client (admin scope).
+ * Returns the initialized drizzle client (owner scope).
  */
 export function getDb(): PostgresJsDatabase {
   if (!db)
@@ -131,21 +131,6 @@ export function createSecureClient(userId: string) {
         });
       } catch (error) {
         console.error("Error in secure query execution:", error);
-        throw error;
-      }
-    },
-
-    async transaction<T>(
-      txFn: (txDb: PostgresJsDatabase) => Promise<T>
-    ): Promise<T> {
-      try {
-        return await authDb.transaction(async (txDb) => {
-          await txDb.execute(sql`SELECT auth.init()`);
-          await txDb.execute(sql`SELECT auth.set_user_id(${userId})`);
-          return txFn(txDb);
-        });
-      } catch (error) {
-        console.error("Error in secure transaction execution:", error);
         throw error;
       }
     },
